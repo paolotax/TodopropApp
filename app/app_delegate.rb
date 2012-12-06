@@ -2,7 +2,7 @@ class AppDelegate
   attr_accessor :navigationController, :window
   def application(application, didFinishLaunchingWithOptions:launchOptions)
 
-    AFMotion::Client.build_shared("http://localhost:3000") do
+    AFMotion::Client.build_shared("http://192.168.1.133:3000") do
       header "Accept", "application/json"
 
       operation :json
@@ -13,7 +13,7 @@ class AppDelegate
 
     AFNetworkActivityIndicatorManager.sharedManager.enabled = true
 
-    viewController = AppuntiViewController.alloc.initWithStyle(UITableViewStylePlain)
+    viewController = ClientiTableViewController.alloc.initWithStyle(UITableViewStylePlain)
 
     self.navigationController = UINavigationController.alloc.initWithRootViewController(viewController)
     self.navigationController.navigationBar.tintColor = UIColor.darkGrayColor

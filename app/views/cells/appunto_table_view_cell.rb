@@ -1,5 +1,6 @@
-class PostTableViewCell < UITableViewCell
-  attr_accessor :post
+class AppuntoTableViewCell < UITableViewCell
+  
+  attr_accessor :appunto
 
   def initWithStyle(style, reuseIdentifier:reuseIdentifier)
     super
@@ -11,24 +12,24 @@ class PostTableViewCell < UITableViewCell
     self
   end
 
-  def post=(post)
-    @post = post
+  def appunto=(appunto)
+    @appunto = appunto
 
-    self.textLabel.text = self.post.cliente_nome
-    self.detailTextLabel.text = "@#{self.post.destinatario} - #{self.post.note}"
+    self.textLabel.text = self.appunto.cliente_nome
+    self.detailTextLabel.text = "@#{self.appunto.destinatario} - #{self.appunto.note}"
 
-    stato_image = UIImage.imageNamed("task-#{self.post.stato}")
+    stato_image = UIImage.imageNamed("task-#{self.appunto.stato}")
     self.imageView.setImage(stato_image)
 
-    #self.imageView = {url: self.post.user.avatar_url.to_url, placeholder: UIImage.imageNamed("profile-image-placeholder")}
+    #self.imageView = {url: self.appunto.user.avatar_url.to_url, placeholder: UIImage.imageNamed("profile-image-placeholder")}
 
     self.setNeedsLayout
 
-    @post
+    @appunto
   end
 
-  def self.heightForCellWithPost(post)
-    sizeToFit = post.note.sizeWithFont(UIFont.systemFontOfSize(12), constrainedToSize: CGSizeMake(220, Float::MAX), lineBreakMode:UILineBreakModeWordWrap)
+  def self.heightForCellWithPost(appunto)
+    sizeToFit = appunto.note.sizeWithFont(UIFont.systemFontOfSize(12), constrainedToSize: CGSizeMake(220, Float::MAX), lineBreakMode:UILineBreakModeWordWrap)
     
     return [70, sizeToFit.height + 45].max
   end
@@ -40,7 +41,7 @@ class PostTableViewCell < UITableViewCell
     self.textLabel.frame = CGRectMake(70, 10, 240, 20);
 
     detailTextLabelFrame = CGRectOffset(self.textLabel.frame, 0, 25);
-    detailTextLabelFrame.size.height = self.class.heightForCellWithPost(self.post) - 45
+    detailTextLabelFrame.size.height = self.class.heightForCellWithPost(self.appunto) - 45
     self.detailTextLabel.frame = detailTextLabelFrame
   end
 end

@@ -1,12 +1,13 @@
-class AppuntiViewController < UITableViewController
-  attr_accessor :posts
+class AppuntiTableViewController < UITableViewController
+  
+  attr_accessor :appunti
   attr_accessor :activityIndicatorView
 
   def reload
     self.activityIndicatorView.startAnimating
     self.navigationItem.rightBarButtonItem.enabled = true
 
-    Post.fetchGlobalTimelinePosts do |posts, error|
+    Appunto.fetchTodopropaAppunti do |appunti, error|
       if (error)
         UIAlertView.alloc.initWithTitle("Error",
           message:error.localizedDescription,
@@ -14,7 +15,7 @@ class AppuntiViewController < UITableViewController
           cancelButtonTitle:nil,
           otherButtonTitles:"OK", nil).show
       else
-        self.posts = posts
+        self.appunti = appunti
       end
 
       self.activityIndicatorView.stopAnimating
@@ -22,14 +23,14 @@ class AppuntiViewController < UITableViewController
     end
   end
 
-  def posts
-    @posts ||= []
+  def appunti
+    @appunti ||= []
   end
 
-  def posts=(posts)
-    @posts = posts
+  def appunti=(appunti)
+    @appunti = appunti
     self.tableView.reloadData
-    @posts
+    @appunti
   end
 
   def loadView
@@ -43,8 +44,6 @@ class AppuntiViewController < UITableViewController
     super
 
     self.title = "Appunti"
-
-    @credentialStore = CredentialStore.alloc.init;
 
     self.navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithCustomView(self.activityIndicatorView)
     self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh, target:self, action: 'reload')
@@ -61,30 +60,30 @@ class AppuntiViewController < UITableViewController
   end
 
   def tableView(tableView, numberOfRowsInSection:section)
-    self.posts.count
+    self.appunti.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     @@identifier ||= "Cell"
 
     cell = tableView.dequeueReusableCellWithIdentifier(@@identifier) || begin
-      PostTableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier:@@identifier)
+      AppuntoTableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier:@@identifier)
     end
 
-    cell.post = self.posts[indexPath.row]
+    cell.appunto = self.appunti[indexPath.row]
   
     cell
   end
 
   def tableView(tableView, willDisplayCell:cell, forRowAtIndexPath:indexPath)
 
-    if cell.post.stato == "completato"
+    if cell.appunto.stato == "completato"
       cell.backgroundColor = UIColor.groupTableViewBackgroundColor
     end  
   end
 
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
-    PostTableViewCell.heightForCellWithPost(self.posts[indexPath.row])
+    AppuntoTableViewCell.heightForCellWithPost(self.appunti[indexPath.row])
   end
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
