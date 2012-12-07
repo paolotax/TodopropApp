@@ -4,6 +4,30 @@ class ClientiTableViewController < UITableViewController
   attr_accessor :search_results
   attr_accessor :activityIndicatorView
 
+  def self.controller
+    @controller ||= ClientiTableViewController.alloc.initWithNibName(nil, bundle: nil)
+  end
+  
+  def user=(user)
+    # @user_label.text = "User: #{user}"
+    # @user_label.sizeToFit
+    # @user_label.center = [self.view.frame.size.width/2, self.view.frame.size.height/2 - 40]
+  end
+
+  def password=(password)
+    # @password_label.text = "Password: #{password}"
+    # @password_label.sizeToFit
+    # @password_label.center = [@user_label.center.x, @user_label.center.y + @password_label.bounds.size.height]
+  end
+
+  def remember=(remember)
+    # @remember_label.text = "Remember? #{remember}"
+    # @remember_label.sizeToFit
+    # @remember_label.center = [@password_label.center.x, @password_label.center.y + @remember_label.bounds.size.height]
+  end
+
+
+
   def reload
     self.activityIndicatorView.startAnimating
     self.navigationItem.rightBarButtonItem.enabled = true
@@ -77,6 +101,10 @@ class ClientiTableViewController < UITableViewController
     self.reload
   end
 
+  def viewDidAppear(animated)
+    view.reloadData
+  end
+
   def searchBarSearchButtonClicked(search_bar)
     @search_results.clear
     search_bar.resignFirstResponder
@@ -92,7 +120,6 @@ class ClientiTableViewController < UITableViewController
         c.titolo.downcase.include?( condition) ||
           c.frazione.downcase.include? (condition)
     end  
-
     view.reloadData
   end
 
@@ -135,10 +162,15 @@ class ClientiTableViewController < UITableViewController
 ## Table view delegate
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-    cliente_view_controller = ClienteViewController.alloc.init
+    # cliente_view_controller = ClienteViewController.alloc.init
+    # cliente = self.search_results[indexPath.row]
+    # cliente_view_controller.bind_cliente(cliente)
+    # self.navigationController.pushViewController(cliente_view_controller, animated:true)
+    
     cliente = self.search_results[indexPath.row]
-    cliente_view_controller.bind_cliente(cliente)
-    self.navigationController.pushViewController(cliente_view_controller, animated:true)
+    controller = Formotion::FormableController.alloc.initWithModel(cliente)
+    self.navigationController.pushViewController(controller, animated:true)
+
   end
 
 end

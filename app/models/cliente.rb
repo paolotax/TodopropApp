@@ -1,4 +1,16 @@
 class Cliente
+  
+  include Formotion::Formable
+
+  form_property :titolo, :string
+  form_property :comune, :string
+  form_property :frazione, :string
+
+  form_property :cliente_tipo, :picker, items: ["Scuola Primaria", "Cartoleria", "Ditta"]
+  form_property :provincia, :picker, items: ["RA", "RE", "MO"]
+
+  form_title "Modifica Cliente"
+
   attr_accessor :id, :titolo, :comune, :frazione, :cliente_tipo, :indirizzo, :cap, :provincia, 
                 :telefono, :email
 
