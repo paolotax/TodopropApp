@@ -7,8 +7,24 @@ class ClientiTableViewController < UITableViewController
   def self.controller
     @controller ||= ClientiTableViewController.alloc.initWithNibName(nil, bundle: nil)
   end
-  
+
+  def token
+    @token
+  end
+
+  def token=(token)
+    @token = token
+  end
+
   def user=(user)
+    if user == "paolotax"
+      @token = "B2L4q6unF1ZjVVQKXFY3"
+    end
+    
+    if user == "polso"
+      @token = "1BjrPchVBx1pXBFWsGoY"
+    end  
+    reload
     # @user_label.text = "User: #{user}"
     # @user_label.sizeToFit
     # @user_label.center = [self.view.frame.size.width/2, self.view.frame.size.height/2 - 40]
@@ -33,7 +49,7 @@ class ClientiTableViewController < UITableViewController
     self.navigationItem.rightBarButtonItem.enabled = true
 
     if @clienti.blank?
-      Cliente.fetchTodopropaClienti do |clienti, error|
+      Cliente.fetchTodopropaClienti(@token) do |clienti, error|
         if (error)
           UIAlertView.alloc.initWithTitle("Error",
             message:error.localizedDescription,
@@ -92,7 +108,6 @@ class ClientiTableViewController < UITableViewController
     self.tableView.rowHeight = 70
     
     search_bar = UISearchBar.alloc.initWithFrame([[0,0],[200,44]])
-    search_bar.tintColor = UIColor.darkGrayColor
     search_bar.placeholder = "cerca clienti..."
     search_bar.delegate = self
     #view.addSubview(search_bar)

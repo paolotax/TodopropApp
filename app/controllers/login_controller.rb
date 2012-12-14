@@ -1,12 +1,12 @@
 class LoginController < Formotion::FormController
   def init
     form = Formotion::Form.new({
-      title: "Login",
+      title: "Accesso",
       sections: [{
         rows: [{
-          title: "User Name",
+          title: "Nome utente",
           type: :string,
-          placeholder: "name",
+          placeholder: "nome",
           key: :user
         }, {
           title: "Password",
@@ -15,14 +15,14 @@ class LoginController < Formotion::FormController
           key: :password,
           secure: true
         }, {
-          title: "Remember?",
+          title: "Ricordati?",
           type: :switch,
           key: :remember,
           value: true
         }]
       }, {
         rows: [{
-          title: "Login",
+          title: "Accedi",
           type: :submit,
         }]
       }]
@@ -35,7 +35,7 @@ class LoginController < Formotion::FormController
 
   def viewDidLoad
     super
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle("Login", style: UIBarButtonItemStyleDone, target:self, action:'login')
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle("Accedi", style: UIBarButtonItemStyleDone, target:self, action:'login')
   end
 
   def login

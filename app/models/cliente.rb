@@ -24,9 +24,12 @@ class Cliente
     self.frazione.blank? ? self.comune : self.frazione
   end
   
-  def self.fetchTodopropaClienti(&callback)
-    AFMotion::Client.shared.get("api/v1/clienti.json?auth_token=B2L4q6unF1ZjVVQKXFY3") do |result|
+  def self.fetchTodopropaClienti(token, &callback)
+    AFMotion::Client.shared.get("api/v1/clienti.json") do |result|
       
+       
+      puts result.operation
+
       if result.success?
         clienti = []
         result.object.each do |attributes|

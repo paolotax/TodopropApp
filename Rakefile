@@ -10,7 +10,9 @@ Motion::Project::App.setup do |app|
   app.name = 'youpropapp'
   app.provisioning_profile = '/Users/paolotax/Library/MobileDevice/Provisioning Profiles/7273E3EF-6FB1-4E7F-95FD-3A394D280C0B.mobileprovision' 
   app.codesign_certificate = 'iPhone Developer: Paolo Tassinari (9L6JUZD52Q)' 
+
   app.pods do
     pod 'AFNetworking'
+    pod 'SSKeychain'
   end
 end

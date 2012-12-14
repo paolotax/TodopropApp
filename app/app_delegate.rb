@@ -3,9 +3,12 @@ class AppDelegate
   
   def application(application, didFinishLaunchingWithOptions:launchOptions)
 
-    AFMotion::Client.build_shared("http://localhost:3000") do
+    AFMotion::Client.build_shared("http://192.168.1.133:3000") do
+      
       header "Accept", "application/json"
-
+      
+      authorization(username: "paolotax", password: "sisboccia")
+      
       operation :json
     end
 

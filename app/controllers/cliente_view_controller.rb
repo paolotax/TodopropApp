@@ -18,9 +18,9 @@ class ClienteViewController < UIViewController
     buttonChiama   = view.viewWithTag(4)
     buttonEmail    = view.viewWithTag(5)
 
-    labelTitolo.text = @cliente.titolo
+    labelTitolo.text    = @cliente.titolo
     labelIndirizzo.text = @cliente.indirizzo
-    labelComune.text = "#{@cliente.cap} #{@cliente.citta} #{@cliente.provincia}"
+    labelComune.text    = "#{@cliente.cap} #{@cliente.citta} #{@cliente.provincia}"
 
     buttonChiama.addTarget(self, action:'makeCall:', forControlEvents:UIControlEventTouchUpInside)
     buttonEmail.addTarget(self, action:'sendEmail:', forControlEvents:UIControlEventTouchUpInside)
