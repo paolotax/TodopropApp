@@ -3,6 +3,11 @@ class AppuntiTableViewController < UITableViewController
   attr_accessor :appunti
   attr_accessor :activityIndicatorView
 
+  def self.controller
+    @controller ||= AppuntiTableViewController.alloc.initWithNibName(nil, bundle: nil)
+  end
+
+
   def reload
     self.activityIndicatorView.startAnimating
     self.navigationItem.rightBarButtonItem.enabled = true

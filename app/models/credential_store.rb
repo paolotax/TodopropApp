@@ -23,7 +23,7 @@ class CredentialStore
   end
 
   private 
-  rd
+
     def setSecureValue(value, forKey:key)
       if (value) 
         SSKeychain.setPassword(value, forService:SERVICE_NAME, account:key)

@@ -3,12 +3,9 @@ class AppDelegate
   
   def application(application, didFinishLaunchingWithOptions:launchOptions)
 
-    AFMotion::Client.build_shared("http://192.168.1.133:3000") do
-      
+    AFMotion::Client.build_shared("http://localhost:3000") do
       header "Accept", "application/json"
-      
-      authorization(username: "paolotax", password: "sisboccia")
-      
+      authorization(token: "914226733ed1b75b3610bbf6cec046610ef104106fd325adb557fd07c9b5ae5d")
       operation :json
     end
 
@@ -31,14 +28,14 @@ class AppDelegate
     
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
-    @navigation_controller = UINavigationController.alloc.initWithRootViewController(ClientiTableViewController.controller)
+    @navigation_controller = UINavigationController.alloc.initWithRootViewController(AppuntiTableViewController.controller)
     @window.rootViewController = @navigation_controller
     @window.makeKeyAndVisible
 
-    @login = LoginController.alloc.init
-    @login_navigation = UINavigationController.alloc.initWithRootViewController(@login)
+    # @login = LoginController.alloc.init
+    # @login_navigation = UINavigationController.alloc.initWithRootViewController(@login)
 
-    ClientiTableViewController.controller.presentModalViewController(@login_navigation, animated:false)
+    # ClientiTableViewController.controller.presentModalViewController(@login_navigation, animated:false)
 
 
   end
