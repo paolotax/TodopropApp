@@ -13,7 +13,7 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod 'AFNetworking'
-    pod 'NXOAuth2Client'
+    pod 'AFOAuth2Client'
     pod 'SSKeychain'
   end
 end

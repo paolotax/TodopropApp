@@ -1,10 +1,12 @@
 class CredentialStore
 
-  attr_accessor :auth_token
+  attr_accessor :auth_token, :username, :password
 
-  SERVICE_NAME = "todopropa"
+  SERVICE_NAME   = "todopropa"
   AUTH_TOKEN_KEY = "auth_token"
-  
+  USERNAME_KEY   = "username"
+  PASSWORD_KEY   = "password"
+
   def is_logged_in?
     !self.auth_token.nil?    
   end  
@@ -19,21 +21,36 @@ class CredentialStore
 
   def auth_token=(auth_token)
     self.setSecureValue(auth_token, forKey:AUTH_TOKEN_KEY)
-    NSNotificationCenter.defaultCenter.postNotificationName('token-changed', object:self)
+    #NSNotificationCenter.defaultCenter.postNotificationName('token-changed', object:self)
   end
 
-  private 
+  def username
+    self.secureValueForKey USERNAME_KEY
+  end
 
-    def setSecureValue(value, forKey:key)
-      if (value) 
-        SSKeychain.setPassword(value, forService:SERVICE_NAME, account:key)
-      else
-        SSKeychain.deletePasswordForService(SERVICE_NAME, account:key)
-      end
-    end    
+  def username=(username)
+    self.setSecureValue(username, forKey:USERNAME_KEY)
+  end
 
-    def secureValueForKey(key)
-      return SSKeychain.passwordForService(SERVICE_NAME, account:key)
+  def password
+    self.secureValueForKey PASSWORD_KEY
+  end
+
+  def password=(password)
+    self.setSecureValue(password, forKey:PASSWORD_KEY)
+  end
+
+  def setSecureValue(value, forKey:key)
+    puts value
+    if (value) 
+      SSKeychain.setPassword(value, forService:SERVICE_NAME, account:key)
+    else
+      SSKeychain.deletePasswordForService(SERVICE_NAME, account:key)
     end
+  end    
+
+  def secureValueForKey(key)
+    return SSKeychain.passwordForService(SERVICE_NAME, account:key)
+  end
 
 end

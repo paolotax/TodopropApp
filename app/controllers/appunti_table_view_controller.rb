@@ -47,20 +47,15 @@ class AppuntiTableViewController < UITableViewController
 
   def viewDidLoad
     super
-
     self.title = "Appunti"
-
     self.navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithCustomView(self.activityIndicatorView)
     self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh, target:self, action: 'reload')
-
     self.tableView.rowHeight = 70
-
     self.reload
   end
 
   def viewDidUnload
     self.activityIndicatorView = nil
-
     super
   end
 
@@ -70,18 +65,14 @@ class AppuntiTableViewController < UITableViewController
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     @@identifier ||= "Cell"
-
     cell = tableView.dequeueReusableCellWithIdentifier(@@identifier) || begin
       AppuntoTableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier:@@identifier)
     end
-
     cell.appunto = self.appunti[indexPath.row]
-  
     cell
   end
 
   def tableView(tableView, willDisplayCell:cell, forRowAtIndexPath:indexPath)
-
     if cell.appunto.stato == "completato"
       cell.backgroundColor = UIColor.groupTableViewBackgroundColor
     end  

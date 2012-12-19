@@ -8,42 +8,6 @@ class ClientiTableViewController < UITableViewController
     @controller ||= ClientiTableViewController.alloc.initWithNibName(nil, bundle: nil)
   end
 
-  def token
-    @token
-  end
-
-  def token=(token)
-    @token = token
-  end
-
-  def user=(user)
-    if user == "paolotax"
-      @token = "B2L4q6unF1ZjVVQKXFY3"
-    end
-    
-    if user == "polso"
-      @token = "1BjrPchVBx1pXBFWsGoY"
-    end  
-    reload
-    # @user_label.text = "User: #{user}"
-    # @user_label.sizeToFit
-    # @user_label.center = [self.view.frame.size.width/2, self.view.frame.size.height/2 - 40]
-  end
-
-  def password=(password)
-    # @password_label.text = "Password: #{password}"
-    # @password_label.sizeToFit
-    # @password_label.center = [@user_label.center.x, @user_label.center.y + @password_label.bounds.size.height]
-  end
-
-  def remember=(remember)
-    # @remember_label.text = "Remember? #{remember}"
-    # @remember_label.sizeToFit
-    # @remember_label.center = [@password_label.center.x, @password_label.center.y + @remember_label.bounds.size.height]
-  end
-
-
-
   def reload
     self.activityIndicatorView.startAnimating
     self.navigationItem.rightBarButtonItem.enabled = true
@@ -164,7 +128,7 @@ class ClientiTableViewController < UITableViewController
 
     cell = tableView.dequeueReusableCellWithIdentifier(@@identifier) || begin
       cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier:@@identifier)
-      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+      cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton
       cell
     end
 
@@ -177,15 +141,17 @@ class ClientiTableViewController < UITableViewController
 ## Table view delegate
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-    # cliente_view_controller = ClienteViewController.alloc.init
-    # cliente = self.search_results[indexPath.row]
-    # cliente_view_controller.bind_cliente(cliente)
-    # self.navigationController.pushViewController(cliente_view_controller, animated:true)
-    
+    cliente_view_controller = ClienteViewController.alloc.init
+    cliente = self.search_results[indexPath.row]
+    cliente_view_controller.bind_cliente(cliente)
+    self.navigationController.pushViewController(cliente_view_controller, animated:true)
+  end
+
+  def tableView(tableview, accessoryButtonTappedForRowWithIndexPath:indexPath)
     cliente = self.search_results[indexPath.row]
     controller = Formotion::FormableController.alloc.initWithModel(cliente)
     self.navigationController.pushViewController(controller, animated:true)
-
   end
+
 
 end

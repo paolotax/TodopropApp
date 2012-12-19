@@ -1,66 +1,31 @@
 class AuthApiClient < AFHTTPClient
 
-  BASE_URL = "http://localhost:3000"
+  @@instance = nil
+  BASE_URL = "http://todopropa.com"
 
+  def init
+    AFMotion::Client.build_shared(BASE_URL) do
+      header "Accept", "application/json"
+      operation :json
+    end
+  end
+  
   def self.shared_client
-
+    return @@instance unless @@instance.nil?
+    @@instance =  AuthApiClient.alloc.initWithBaseURL(NSURL.URLWithString(BASE_URL))
+    @@instance.registerHTTPOperationClass(AFJSONRequestOperation)
+    @@instance.setDefaultHeader("Accept", value:"application/json")
+    @@instance
   end
-
-# + (id)sharedClient {
-#     static AuthAPIClient *__instance;
-#     static dispatch_once_t onceToken;
-#     dispatch_once(&onceToken, ^{
-#         NSURL *baseUrl = [NSURL URLWithString:BASE_URL];
-#         __instance = [[AuthAPIClient alloc] initWithBaseURL:baseUrl];
-#     });
-#     return __instance;
-# }
-
-  def init_with_base_url(url)
-
-    # self = super.initWithBaseURL(url)
-    # if self
-    #   self.registerHTTPOperationClass(AFJSONRequestOperation.class)
-    #   self.set_auth_token_header
-    #   NSNotificationCenter.defaultCenter.addObserver(self,
-    #                                              selector:"token_changed",
-    #                                                  name:"token-changed",
-    #                                                object:nil)
-    # end
-    # return self
-  end
-
-# - (id)initWithBaseURL:(NSURL *)url {
-#     self = [super initWithBaseURL:url];
-#     if (self) {
-#         [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-#         [self setAuthTokenHeader];
-        
-#         [[NSNotificationCenter defaultCenter] addObserver:self
-#                                                  selector:@selector(tokenChanged:)
-#                                                      name:@"token-changed"
-#                                                    object:nil];
-#     }
-#     return self;
-# }
 
   def set_auth_token_header
-    store = CredentialStore.new
+    store = CredentialStore.alloc.init
     auth_token = store.auth_token
-    self.setDefaultHeader("auth_token", value:auth_token)
+    self.setDefaultHeader("Authorization", value:"Bearer #{auth_token}")
   end
 
-# - (void)setAuthTokenHeader {
-#     CredentialStore *store = [[CredentialStore alloc] init];
-#     NSString *authToken = [store authToken];
-#     NSLog(@"setAuthToken %@", authToken);
-#     [self setDefaultHeader:@"auth_token" value:authToken];
-# }
-
-def tokenChanged(notification)
-  self.set_auth_token_header
-end
-
-
+  def tokenChanged(notification)
+    self.set_auth_token_header
+  end
 
 end
