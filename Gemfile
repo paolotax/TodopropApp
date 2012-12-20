@@ -6,4 +6,4 @@ gem 'geomotion'
 gem 'formotion'
 gem 'afmotion'
 gem 'bubble-wrap'
-gem 'motion-oauth2'
+gem "ib"

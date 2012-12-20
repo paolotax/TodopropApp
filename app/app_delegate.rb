@@ -26,8 +26,12 @@ class AppDelegate
     appunti_controller.title = "Appunti"
     appunti_nav_controller =
       UINavigationController.alloc.initWithRootViewController(appunti_controller)
-    
-    tab_controller.viewControllers = [nav_controller, appunti_nav_controller]
+ 
+    user_controller = UserController.alloc.initWithNibName(nil, bundle: nil)
+    user_controller.title = "Opzioni"
+    user_nav_controller =
+      UINavigationController.alloc.initWithRootViewController(user_controller)   
+    tab_controller.viewControllers = [nav_controller, appunti_nav_controller, user_nav_controller]
 
     @login = LoginController.alloc.init
     @login.parent_controller = ClientiTableViewController.controller

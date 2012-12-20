@@ -29,11 +29,12 @@ GEM
     geomotion (0.1)
     hashie (1.2.0)
     i18n (0.6.1)
+    ib (0.2.4)
+      thor (>= 0.15.4)
+      xcodeproj (>= 0.4.0)
     json (1.7.5)
     motion-cocoapods (1.2.1)
       cocoapods (>= 0.14.0)
-    motion-oauth2 (0.0.1)
-      bubble-wrap
     multi_json (1.4.0)
     multipart-post (1.1.5)
     octokit (1.19.0)
@@ -60,6 +61,6 @@ DEPENDENCIES
   bubble-wrap
   formotion
   geomotion
-  motion-oauth2
+  ib
   rubymotion_generators
   sugarcube

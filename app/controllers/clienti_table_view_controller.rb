@@ -33,6 +33,8 @@ class ClientiTableViewController < UITableViewController
       self.activityIndicatorView.stopAnimating
       self.navigationItem.rightBarButtonItem.enabled = true
       self.title = "Clienti"
+
+      doneReloadingTableViewData
     end
   end
 
@@ -77,11 +79,20 @@ class ClientiTableViewController < UITableViewController
     #view.addSubview(search_bar)
     self.navigationItem.titleView = search_bar
 
-    self.reload
+    #self.reload
   end
 
   def viewDidAppear(animated)
     view.reloadData
+
+    @refreshHeaderView ||= begin
+      rhv = RefreshTableHeaderView.alloc.initWithFrame(CGRectMake(0, 0 - self.tableView.bounds.size.height, self.tableView.bounds.size.width, self.tableView.bounds.size.height))
+      rhv.delegate = self
+      rhv.refreshLastUpdatedDate    
+      tableView.addSubview(rhv)
+      rhv
+    end
+
   end
 
   def searchBarSearchButtonClicked(search_bar)
@@ -153,5 +164,37 @@ class ClientiTableViewController < UITableViewController
     self.navigationController.pushViewController(controller, animated:true)
   end
 
+ ## PullToRefresh
+ 
+ def reloadTableViewDataSource
+    @reloading = true
+  end
+  
+  def doneReloadingTableViewData
+    @reloading = false
+    @refreshHeaderView.refreshScrollViewDataSourceDidFinishLoading(self.tableView)
+  end
+  
+  def scrollViewDidScroll(scrollView)
+    @refreshHeaderView.refreshScrollViewDidScroll(scrollView)
+  end
+  
+  def scrollViewDidEndDragging(scrollView, willDecelerate:decelerate)
+    @refreshHeaderView.refreshScrollViewDidEndDragging(scrollView)
+  end
+  
+  def refreshTableHeaderDidTriggerRefresh(view)
+    self.reloadTableViewDataSource
+    self.performSelector('reload', withObject:nil, afterDelay:0)
+  end
+    
+  def refreshTableHeaderDataSourceIsLoading(view)
+    @reloading
+  end
+  
+  def refreshTableHeaderDataSourceLastUpdated(view)
+    NSDate.date
+  end
+ 
 
 end

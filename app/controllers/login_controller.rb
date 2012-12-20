@@ -64,8 +64,8 @@ class LoginController < Formotion::FormController
 
     credentials = @form.render
     puts credentials
-    username = credentials[:username]
-    password = credentials[:password]
+    my_username = credentials[:username]
+    my_password = credentials[:password]
 
     app_id = "36e1b9ed802dc7ee45e375bf318924dc3ae0f0f842c690611fde8336687960eb"
     secret = "11ab577f8fabf2ac33bdd75e951fc6507ef7bc21ef993c2a77a1383bed438224"
@@ -77,8 +77,8 @@ class LoginController < Formotion::FormController
       grant_type: 'password',
       client_id: app_id,
       client_secret: secret,
-      username: username,
-      password: password
+      username: my_username,
+      password: my_password
     }
 
 
@@ -86,8 +86,8 @@ class LoginController < Formotion::FormController
       if result.success?
         token = result.object['access_token']
 
-        @credential_store.username = username.to_s
-        @credential_store.password = password.to_s
+        @credential_store.username = "polso"
+        @credential_store.password = "polso14"
         # se salvo il token fa saltare username
         #@credential_store.auth_token = "#{token}"        
 
@@ -99,4 +99,6 @@ class LoginController < Formotion::FormController
       end
     end
   end
+
+
 end

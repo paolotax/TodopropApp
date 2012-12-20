@@ -17,6 +17,10 @@ class UserController < UIViewController
 
     @remember_label = UILabel.alloc.initWithFrame(CGRectZero)
     self.view.addSubview(@remember_label)
+
+    self.user = "paolotax"
+    self.password = "sisboccia"
+
   end
 
   def user=(user)

@@ -25,6 +25,9 @@ class AppuntiTableViewController < UITableViewController
 
       self.activityIndicatorView.stopAnimating
       self.navigationItem.rightBarButtonItem.enabled = true
+      
+      doneReloadingTableViewData
+
     end
   end
 
@@ -58,6 +61,19 @@ class AppuntiTableViewController < UITableViewController
     self.activityIndicatorView = nil
     super
   end
+  
+  def viewDidAppear(animated)
+    view.reloadData
+
+    @refreshHeaderView ||= begin
+      rhv = RefreshTableHeaderView.alloc.initWithFrame(CGRectMake(0, 0 - self.tableView.bounds.size.height, self.tableView.bounds.size.width, self.tableView.bounds.size.height))
+      rhv.delegate = self
+      rhv.refreshLastUpdatedDate    
+      tableView.addSubview(rhv)
+      rhv
+    end
+
+  end
 
   def tableView(tableView, numberOfRowsInSection:section)
     self.appunti.count
@@ -85,4 +101,38 @@ class AppuntiTableViewController < UITableViewController
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated:true)
   end
+
+  ## PullToRefresh
+ 
+  def reloadTableViewDataSource
+    @reloading = true
+  end
+  
+  def doneReloadingTableViewData
+    
+    @reloading = false
+    @refreshHeaderView.refreshScrollViewDataSourceDidFinishLoading(self.tableView)
+  end
+  
+  def scrollViewDidScroll(scrollView)
+    @refreshHeaderView.refreshScrollViewDidScroll(scrollView)
+  end
+  
+  def scrollViewDidEndDragging(scrollView, willDecelerate:decelerate)
+    @refreshHeaderView.refreshScrollViewDidEndDragging(scrollView)
+  end
+  
+  def refreshTableHeaderDidTriggerRefresh(view)
+    self.reloadTableViewDataSource
+    self.performSelector('reload', withObject:nil, afterDelay:0)
+  end
+    
+  def refreshTableHeaderDataSourceIsLoading(view)
+    @reloading
+  end
+  
+  def refreshTableHeaderDataSourceLastUpdated(view)
+    NSDate.date
+  end
+
 end
