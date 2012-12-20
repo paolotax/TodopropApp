@@ -53,19 +53,19 @@ class LoginController < Formotion::FormController
   def load_credentials
     usernameIndexPath = NSIndexPath.indexPathForRow(0, inSection:0)
     usernameIndexCell = self.tableView.cellForRowAtIndexPath usernameIndexPath
-    usernameIndexCell.subviews[2].text = @credential_store.username
+    usernameIndexCell.subviews[2].text = "polso"
 
     passwordIndexPath = NSIndexPath.indexPathForRow(1, inSection:0)
     passwordIndexCell = self.tableView.cellForRowAtIndexPath passwordIndexPath
-    passwordIndexCell.subviews[2].text = @credential_store.password
+    passwordIndexCell.subviews[2].text = "polso14"
   end
 
   def login
 
     credentials = @form.render
     puts credentials
-    my_username = credentials[:username]
-    my_password = credentials[:password]
+    my_username = "polso"
+    my_password = "polso14"
 
     app_id = "36e1b9ed802dc7ee45e375bf318924dc3ae0f0f842c690611fde8336687960eb"
     secret = "11ab577f8fabf2ac33bdd75e951fc6507ef7bc21ef993c2a77a1383bed438224"

@@ -6,7 +6,10 @@ class UserController < UIViewController
 
   def viewDidLoad
     super
-
+    
+    
+    
+    
     self.view.backgroundColor = UIColor.whiteColor
 
     @user_label = UILabel.alloc.initWithFrame(CGRectZero)

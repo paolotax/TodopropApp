@@ -49,7 +49,7 @@ class ClienteViewController < UIViewController
   end
 
   def makeCall(sender)
-    url = NSURL.URLWithString("tel://#{@cliente.telefono}")
+    url = NSURL.URLWithString("tel://#{@cliente.telefono.split(" ").join}")
     UIApplication.sharedApplication.openURL(url);
   end  
 
