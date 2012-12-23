@@ -1,46 +1,67 @@
 class UserController < UIViewController
 
-  def self.controller
-    @controller ||= UserController.alloc.initWithNibName(nil, bundle: nil)
-  end
+  stylesheet :main
 
+  def init
+    super && self.tap {}
+  end
+  
   def viewDidLoad
+
     super
     
-    
-    
-    
-    self.view.backgroundColor = UIColor.whiteColor
+    @data = [{
+        fieldName: "username",
+        value: "paolotax"
+      },{
+        fieldName: "password",
+        value: "sisboccia"
+    }]
 
-    @user_label = UILabel.alloc.initWithFrame(CGRectZero)
-    self.view.addSubview(@user_label)
+    @table_view = UITableView.grouped   # !?
+    @table_view.dataSource = self
+    @table_view.delegate = self
 
-    @password_label = UILabel.alloc.initWithFrame(CGRectZero)
-    self.view.addSubview(@password_label)
+    self.view << @table_view   # !?
 
-    @remember_label = UILabel.alloc.initWithFrame(CGRectZero)
-    self.view.addSubview(@remember_label)
+    @modal_view = UIControl.alloc.initWithFrame(self.view.bounds)  # [[0, 0, 320, 460]], if you are the "show me the numbers" type
+    @modal_view.backgroundColor = :black.uicolor(0.5)  # black, with alpha of 0.5
+    @modal_view.alpha = 0.0  # hide the view
 
-    self.user = "paolotax"
-    self.password = "sisboccia"
+    self.view << @modal_view
 
+    @button_kill = subview(UIButton.rounded_rect, :ok_button)
+    @button_kill.when(UIControlEventTouchUpInside) do
+      exit(0)
+    end
   end
 
-  def user=(user)
-    @user_label.text = "User: #{user}"
-    @user_label.sizeToFit
-    @user_label.center = [self.view.frame.size.width/2, self.view.frame.size.height/2 - 40]
+  def tableView(table_view, numberOfRowsInSection:section)
+   2
   end
 
-  def password=(password)
-    @password_label.text = "Password: #{password}"
-    @password_label.sizeToFit
-    @password_label.center = [@user_label.center.x, @user_label.center.y + @password_label.bounds.size.height]
+  def tableView(table_view, cellForRowAtIndexPath:index_path)
+
+    cell = table_view.dequeueReusableCellWithIdentifier('Cell')
+    unless cell
+      cell = UITableViewCell.alloc.initWithStyle(:value1.uitablecellstyle,   # !?
+                                 reuseIdentifier:'Cell')
+    end
+
+    cell.textLabel.text = @data[index_path.row][:fieldName]
+    cell.detailTextLabel.text = @data[index_path.row][:value]
+    return cell
   end
 
-  def remember=(remember)
-    @remember_label.text = "Remember? #{remember}"
-    @remember_label.sizeToFit
-    @remember_label.center = [@password_label.center.x, @password_label.center.y + @remember_label.bounds.size.height]
+  # def tableView(table_view, titleForHeaderInSection:section)
+  #   "Settings"
+  # end
+
+
+
+  def tableView(table_view, didSelectRowAtIndexPath:index_path)
+    table_view.deselectRowAtIndexPath(index_path, animated:true)
   end
+
+
 end

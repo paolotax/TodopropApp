@@ -15,7 +15,7 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod 'AFNetworking'
-    pod 'AFOAuth2Client'
+    pod "RDActionSheet"
     pod 'SSKeychain'
   end
 end

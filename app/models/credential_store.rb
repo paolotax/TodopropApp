@@ -41,7 +41,6 @@ class CredentialStore
   end
 
   def setSecureValue(value, forKey:key)
-    puts value
     if (value) 
       SSKeychain.setPassword(value, forService:SERVICE_NAME, account:key)
     else

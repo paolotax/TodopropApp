@@ -1,3 +1,6 @@
+include SugarCube::Adjust
+
+
 class AppDelegate
   
   def application(application, didFinishLaunchingWithOptions:launchOptions)
@@ -27,7 +30,7 @@ class AppDelegate
     appunti_nav_controller =
       UINavigationController.alloc.initWithRootViewController(appunti_controller)
  
-    user_controller = UserController.alloc.initWithNibName(nil, bundle: nil)
+    user_controller = UserController.new
     user_controller.title = "Opzioni"
     user_nav_controller =
       UINavigationController.alloc.initWithRootViewController(user_controller)   
