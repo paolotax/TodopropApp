@@ -34,6 +34,13 @@ class UserController < UIViewController
     @button_kill.when(UIControlEventTouchUpInside) do
       exit(0)
     end
+
+    gravatar_url = Gravatar.getURL("paolo.tassinari@gmail.com")
+    image = UIImage.imageWithData(NSData.dataWithContentsOfURL(gravatar_url))
+
+    @image_view = UIImageView.alloc.initWithImage(image.rounded(10))
+    @image_view.frame = [[60, 157], [200, 200]]
+    view.addSubview(@image_view)
   end
 
   def tableView(table_view, numberOfRowsInSection:section)

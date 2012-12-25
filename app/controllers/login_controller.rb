@@ -4,8 +4,8 @@ class LoginController < Formotion::FormController
 
   def init
 
-    @credential_store = CredentialStore.new
-
+    @credential_store = CredentialStore.alloc.init
+    #UIAlertView.alert SSKeychain.allAccounts[0]["svce"]
     @form = Formotion::Form.new({
       title: "Accesso",
       sections: [{

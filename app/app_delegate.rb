@@ -30,11 +30,19 @@ class AppDelegate
     appunti_nav_controller =
       UINavigationController.alloc.initWithRootViewController(appunti_controller)
  
-    user_controller = UserController.new
+    user_controller = UserController.alloc.init
     user_controller.title = "Opzioni"
     user_nav_controller =
       UINavigationController.alloc.initWithRootViewController(user_controller)   
-    tab_controller.viewControllers = [nav_controller, appunti_nav_controller, user_nav_controller]
+    
+    image_controller = ImageController.alloc.init
+    image_controller.title = "Foto"
+    image_nav_controller =
+      UINavigationController.alloc.initWithRootViewController(image_controller)   
+
+    tab_controller.viewControllers = [nav_controller, appunti_nav_controller, user_nav_controller, image_nav_controller]
+
+
 
     @login = LoginController.alloc.init
     @login.parent_controller = ClientiTableViewController.controller

@@ -35,6 +35,7 @@ GEM
     json (1.7.5)
     motion-cocoapods (1.2.1)
       cocoapods (>= 0.14.0)
+    motion-gravatar (0.0.3)
     multi_json (1.4.0)
     multipart-post (1.1.5)
     octokit (1.19.0)
@@ -64,6 +65,7 @@ DEPENDENCIES
   formotion
   geomotion
   ib
+  motion-gravatar
   rubymotion_generators
   sugarcube
   teacup

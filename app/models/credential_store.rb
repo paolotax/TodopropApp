@@ -2,7 +2,7 @@ class CredentialStore
 
   attr_accessor :auth_token, :username, :password
 
-  SERVICE_NAME   = "todopropa"
+  SERVICE_NAME   = "com.taxsoft.youpropapp"
   AUTH_TOKEN_KEY = "auth_token"
   USERNAME_KEY   = "username"
   PASSWORD_KEY   = "password"

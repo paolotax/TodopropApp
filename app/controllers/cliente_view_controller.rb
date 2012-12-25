@@ -84,6 +84,7 @@ class ClienteViewController < UIViewController
                                                        primaryButtonTitle:"Nuovo Appunto",
                                                        destroyButtonTitle: nil,
                                                         otherButtonTitles:"Telefona", "Invia email", "Naviga", nil)
+    
 
     actionSheet.callbackBlock = lambda { |result, buttonIndex|
       
@@ -108,10 +109,14 @@ class ClienteViewController < UIViewController
     }
     actionSheet.showFrom self.view;
     
-    actionSheet.subviews.each do |view|
-      p view
-      if view.class == UIButton && view.titleLabel.text == "Telefona"
-        view.enabled = !@cliente.telefono.nil?
+    #actionSheet.buttons[1].enabled = false
+
+    actionSheet.buttons.each do |button|
+      if button.titleLabel.text == "Telefona"
+        button.enabled = !@cliente.telefono.blank?
+      end
+      if button.titleLabel.text == "Invia email"
+        button.enabled = !@cliente.email.blank?
       end
     end
 

@@ -13,3 +13,4 @@ gem 'afmotion'
 gem 'bubble-wrap'
 gem "ib"
 gem "teacup"
+gem "motion-gravatar"
