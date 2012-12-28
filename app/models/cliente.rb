@@ -12,7 +12,7 @@ class Cliente
   form_title "Modifica Cliente"
 
   attr_accessor :id, :titolo, :comune, :frazione, :cliente_tipo, :indirizzo, :cap, :provincia, 
-                :telefono, :email
+                :telefono, :email, :appunti
 
   def initialize(attributes = {})
     attributes.each_pair do |key, value|
@@ -26,10 +26,6 @@ class Cliente
   
   def self.fetchTodopropaClienti(token, &callback)
     AFMotion::Client.shared.get("api/v1/clienti.json") do |result|
-      
-       
-      puts result.operation
-
       if result.success?
         clienti = []
         result.object.each do |attributes|
@@ -41,4 +37,21 @@ class Cliente
       end
     end
   end
+
+  def fetchTodopropaAppuntiCliente(&callback)
+    AFMotion::Client.shared.get("api/v1/clienti/#{@id}.json") do |result|
+      if result.success?
+        appunti = []
+        result.object[:appunti].each do |attributes|
+          puts attributes[:appunto]
+          appunti << Appunto.new(attributes[:appunto])
+        end
+        callback.call(appunti, nil)
+      else
+        callback.call([], result.error)
+      end
+    end
+  end
+
+
 end

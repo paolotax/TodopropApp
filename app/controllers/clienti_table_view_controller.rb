@@ -123,6 +123,7 @@ class ClientiTableViewController < UITableViewController
   end
 
 ## Table view data source
+## Table view delegate
 
   def numberOfSectionsInTableView(tableView)
     # Return the number of sections.
@@ -149,8 +150,6 @@ class ClientiTableViewController < UITableViewController
     cell 
   end
 
-## Table view delegate
-
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     cliente_view_controller = ClienteViewController.alloc.init
     cliente = self.search_results[indexPath.row]
@@ -166,7 +165,7 @@ class ClientiTableViewController < UITableViewController
 
  ## PullToRefresh
  
- def reloadTableViewDataSource
+  def reloadTableViewDataSource
     @reloading = true
   end
   

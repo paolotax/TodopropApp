@@ -1,6 +1,6 @@
 class ClienteViewController < UIViewController
   
-  attr_accessor :cliente
+  attr_accessor :cliente, :appunti
 
   def loadView 
     views = NSBundle.mainBundle.loadNibNamed("cliente_view", owner:self, options:nil)
@@ -10,40 +10,47 @@ class ClienteViewController < UIViewController
   def bind_cliente(cliente)
     @cliente = cliente
     self.navigationItem.title = "Cliente: #{@cliente.id}"
+    puts "appunti...... #{self.appunti}"
   end
 
+  def load_appunti
+    @cliente.fetchTodopropaAppuntiCliente do |appunti, error|
+      if (error)
+          UIAlertView.alloc.initWithTitle("Error",
+            message:error.localizedDescription,
+            delegate:nil,
+            cancelButtonTitle:nil,
+            otherButtonTitles:"OK", nil).show
+      else
+        self.appunti = appunti
+        @table_view.reloadData if @table_view
+      end
+    end
+  end
+  
   def viewDidLoad
     super
-    # labelTitolo    = view.viewWithTag(1)
-    # labelIndirizzo = view.viewWithTag(2)
-    # labelComune    = view.viewWithTag(3)
-    # buttonChiama   = view.viewWithTag(4)
-    # buttonEmail    = view.viewWithTag(5)
-    # buttonNuovoAppunto = view.viewWithTag(6)
-
-    # labelTitolo.text    = @cliente.titolo
-    # labelIndirizzo.text = @cliente.indirizzo
-    # labelComune.text    = "#{@cliente.cap} #{@cliente.citta} #{@cliente.provincia}"
-
-    # buttonChiama.addTarget(self, action:'makeCall:', forControlEvents:UIControlEventTouchUpInside)
-    # buttonEmail.addTarget(self, action:'sendEmail:', forControlEvents:UIControlEventTouchUpInside)
-    # buttonNuovoAppunto.addTarget(self, action:'nuovoAppunto:', forControlEvents:UIControlEventTouchUpInside)
 
     self.navigationItem.rightBarButtonItem = 
               UIBarButtonItem.alloc.initWithTitle("Menu", style: UIBarButtonItemStyleBordered, 
                                                          target:self, 
                                                          action:'showActionSheet:')
 
-    @data = [{
-        fieldName: "Cliente",
-        value: @cliente.titolo
-      },{
-        fieldName: "Indirizzo",
-        value: @cliente.indirizzo
-      },{
-        fieldName: "Città",
-        value: "#{@cliente.cap} #{@cliente.citta} #{@cliente.provincia}"
-    }]
+    @appunti = []
+    @data = { 
+              cliente: [{
+                    fieldName: "Cliente",
+                    value: @cliente.titolo
+                  },{
+                    fieldName: "Indirizzo",
+                    value: @cliente.indirizzo
+                  },{
+                    fieldName: "Città",
+                    value: "#{@cliente.cap} #{@cliente.citta} #{@cliente.provincia}"
+                }]
+            }
+
+    load_appunti
 
     @table_view = view.viewWithTag(7)
     @table_view.dataSource = self
@@ -71,20 +78,17 @@ class ClienteViewController < UIViewController
   end  
 
   def nuovoAppunto(sender)
-
     nuovo_appunto_controller = FormAppuntoController.alloc.init
     nuovo_appunto_controller.bindCliente @cliente
     self.navigationController.pushViewController(nuovo_appunto_controller, animated:true)
   end 
 
   def showActionSheet(sender)
-
     self.navigationItem.rightBarButtonItem.enabled = false
     actionSheet = RDActionSheet.alloc.initWithCancelButtonTitle("Annulla",
                                                        primaryButtonTitle:"Nuovo Appunto",
                                                        destroyButtonTitle: nil,
                                                         otherButtonTitles:"Telefona", "Invia email", "Naviga", nil)
-    
 
     actionSheet.callbackBlock = lambda { |result, buttonIndex|
       
@@ -108,8 +112,6 @@ class ClienteViewController < UIViewController
       self.navigationItem.rightBarButtonItem.enabled = true
     }
     actionSheet.showFrom self.view;
-    
-    #actionSheet.buttons[1].enabled = false
 
     actionSheet.buttons.each do |button|
       if button.titleLabel.text == "Telefona"
@@ -119,30 +121,61 @@ class ClienteViewController < UIViewController
         button.enabled = !@cliente.email.blank?
       end
     end
-
   end 
 
 
-  def tableView(table_view, cellForRowAtIndexPath:index_path)
-    cell = table_view.dequeueReusableCellWithIdentifier('Cell')
 
-    unless cell
-      cell = UITableViewCell.alloc.initWithStyle(:value1.uitablecellstyle,   # !?
-                                 reuseIdentifier:'Cell')
-    end
+  ## TableView delegate
 
-    cell.textLabel.text = @data[index_path.row][:fieldName]
-    cell.detailTextLabel.text = @data[index_path.row][:value]
-    
-    return cell
+  def numberOfSectionsInTableView(tableView)
+    2
   end
 
   def tableView(table_view, numberOfRowsInSection:section)
-    3
+    if section == 0
+      @data[:cliente].count
+    else
+      @appunti.count
+    end  
   end
 
-  def tableView(table_view, didSelectRowAtIndexPath:index_path)
-    table_view.deselectRowAtIndexPath(index_path, animated:true)
+  def tableView(table_view, cellForRowAtIndexPath:indexPath)
+
+    if (indexPath.section == 0)
+      
+      cell = table_view.dequeueReusableCellWithIdentifier('cliCell')
+      unless cell
+        cell = UITableViewCell.alloc.initWithStyle(:value1.uitablecellstyle, reuseIdentifier:'cliCell')
+      end
+      cell.textLabel.text =       @data[:cliente][indexPath.row][:fieldName]
+      cell.detailTextLabel.text = @data[:cliente][indexPath.row][:value]
+      return cell
+    
+    else
+      
+      cell = table_view.dequeueReusableCellWithIdentifier('appCliCell')
+      unless cell
+        views = NSBundle.mainBundle.loadNibNamed("appunto_cliente_cell", owner:nil, options:nil)
+        cell = views[0]
+      end
+      
+      cell.appunto = @appunti[indexPath.row]
+      return cell
+    end
   end
+
+  def tableView(tableView, heightForRowAtIndexPath:indexPath)
+
+    if (indexPath.section == 1)
+      AppuntoClienteCell.heightForCellWithAppunto(@appunti[indexPath.row])
+    else
+      44
+    end
+  end
+
+  def tableView(table_view, didSelectRowAtIndexPath:indexPath)
+    table_view.deselectRowAtIndexPath(indexPath, animated:true)
+  end
+
 
 end
