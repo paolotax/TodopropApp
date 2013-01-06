@@ -29,7 +29,7 @@ class Cliente
       if result.success?
         clienti = []
         result.object.each do |attributes|
-          clienti << Cliente.new(attributes)
+          clienti << Cliente.new(attributes[:cliente])
         end
         callback.call(clienti, nil)
       else
@@ -42,8 +42,7 @@ class Cliente
     AFMotion::Client.shared.get("api/v1/clienti/#{@id}.json") do |result|
       if result.success?
         appunti = []
-        result.object[:appunti].each do |attributes|
-          puts attributes[:appunto]
+        result.object[:cliente][:appunti].each do |attributes|
           appunti << Appunto.new(attributes[:appunto])
         end
         callback.call(appunti, nil)

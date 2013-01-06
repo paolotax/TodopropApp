@@ -12,4 +12,4 @@ nbproject
 *~
 *.sw[po]
 .eprj
-
+ib.xcodeproj/*

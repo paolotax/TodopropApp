@@ -5,7 +5,7 @@ class AppDelegate
   
   def application(application, didFinishLaunchingWithOptions:launchOptions)
 
-    AFMotion::Client.build_shared("http://todopropa.com") do
+    AFMotion::Client.build_shared("http://localhost:3000") do
       header "Accept", "application/json"
       operation :json
     end

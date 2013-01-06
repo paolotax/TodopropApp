@@ -10,7 +10,7 @@ class ClienteViewController < UIViewController
   def bind_cliente(cliente)
     @cliente = cliente
     self.navigationItem.title = "Cliente: #{@cliente.id}"
-    puts "appunti...... #{self.appunti}"
+    puts @cliente
   end
 
   def load_appunti

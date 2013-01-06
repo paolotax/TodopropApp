@@ -19,7 +19,7 @@ class Appunto
       if result.success?
         appunti = []
         result.object.each do |attributes|
-          appunti << Appunto.new(attributes)
+          appunti << Appunto.new(attributes[:appunto])
         end
         callback.call(appunti, nil)
       else
